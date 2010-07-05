@@ -21,4 +21,5 @@ cp build/setup-makefiles.sh device/htc/passion/setup-makefiles.sh
 # extract proprietary files
 pushd device/htc/passion/
 ./unzip-files.sh
+./setup-makefiles.sh
 popd
