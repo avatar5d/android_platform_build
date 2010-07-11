@@ -14,21 +14,27 @@ TESTCERT=$SRC/build/target/product/security/testkey.x509.pem
 TESTKEY=$SRC/build/target/product/security/testkey.pk8
 UPDATE_SCRIPT=META-INF/com/google/android/update-script
 
+if [[ -f $OUT ]]; then
+  rm $OUT
+fi
+
+cp $SIGNED $OUT
+
 # remove unnecessary update scripts and recovery image
-zip -d $SIGNED "/recovery/*"
-zip -d $SIGNED "/META-INF/com/google/android/update-binary"
-zip -d $SIGNED "/META-INF/com/google/android/updater-script"
+zip -d $OUT "/recovery/*"
+zip -d $OUT "/META-INF/com/google/android/update-binary"
+zip -d $OUT "/META-INF/com/google/android/updater-script"
 
 # remove recovery from generated update-script 
-unzip $SIGNED $UPDATE_SCRIPT
+unzip $OUT $UPDATE_SCRIPT
 sed "s/^copy_dir PACKAGE:recovery.*$//" $UPDATE_SCRIPT > $UPDATE_SCRIPT.new
 mv $UPDATE_SCRIPT.new $UPDATE_SCRIPT
-sed "s/^.*recovery.sh.*$//" $UPDATE_SCRIPT > $UPDATE_SCRIPT.new
+sed "s/^.*recovery\.sh.*$//" $UPDATE_SCRIPT > $UPDATE_SCRIPT.new
 mv $UPDATE_SCRIPT.new $UPDATE_SCRIPT
 zip -f $SIGNED $UPDATE_SCRIPT
 rm -rf META-INF
 
 # resign
-rm $OUT
-java -jar $SIGNAPK $TESTCERT $TESTKEY $SIGNED $OUT
-jarsigner -verify -verbose -certs $OUT
+java -jar $SIGNAPK $TESTCERT $TESTKEY $OUT $OUT.new
+jarsigner -verify -verbose -certs $OUT.new
+mv $OUT.new $OUT

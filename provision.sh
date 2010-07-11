@@ -2,9 +2,11 @@
 
 # pull down FRF91 OTA package. proprietary files will be 
 # extracted from this
-PASSION_BUILD="signed-passion-ota-43546.cc653ee4.zip"
-wget "http://android.clients.google.com/packages/passion/$PASSION_BUILD"
-mv $PASSION_BUILD passion_update.zip
+if [[ ! -f passion_update.zip ]]; then
+  PASSION_BUILD="signed-passion-ota-43546.cc653ee4.zip"
+  wget "http://android.clients.google.com/packages/passion/$PASSION_BUILD"
+  mv $PASSION_BUILD passion_update.zip
+fi
 
 # prefer su from ChainsDD Superuser
 SU_MK=system/extras/su/Android.mk
