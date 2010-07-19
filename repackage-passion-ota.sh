@@ -8,7 +8,7 @@ fi
 SRC=$1
 
 SIGNED=$SRC/out/target/product/passion/full_passion-ota-eng.$USER.zip
-OUT=$SRC/distilled-update.zip
+OUT=$SRC/distilled-passion-update.zip
 SIGNAPK=$SRC/out/host/linux-x86/framework/signapk.jar 
 TESTCERT=$SRC/build/target/product/security/testkey.x509.pem
 TESTKEY=$SRC/build/target/product/security/testkey.pk8
